@@ -1,0 +1,12 @@
+Première étape : Le modèle client/serveur avec le protocole TCP (client unique)
+===============================================================================
+
+1.  Une application client a établie une connexion avec l’application serveur. Si une deuxième application client est lancée, parvient-elle à se connecter? Pourquoi?
+    Oui, elle est cependant mise en attente jusqu'à ce que la première connection soit fermée. Nous arrivons donc à écrire du texte sur les deux client, mais seul le premier client les transmets au serveur. Le deuxième ne les enverra que lorsque le premier client fermera sa connection.
+
+2.  Comment peut-on remédier à ce problème?
+    Il faut utiliser le multithreading afin que le serveur soit à même de répondre simultanément à plusieurs clients.
+
+Deuxième partie : Modèle client/serveur multithread pour un serveur HTTP
+========================================================================
+
