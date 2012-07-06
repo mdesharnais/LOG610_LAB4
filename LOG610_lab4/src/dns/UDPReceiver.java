@@ -190,9 +190,9 @@ public class UDPReceiver extends Thread {
 						ancount = bais.read();
 					
 					//*Capture de l'adresse IP
-					
 					for(int i=0; i<4; ++i)
 						ancount = bais.read();
+					
 					//*Ajouter la correspondance dans le fichier seulement si une seule
 					//*reponse dans le message DNS (cette apllication ne traite que ce cas)
 					
@@ -204,19 +204,29 @@ public class UDPReceiver extends Thread {
 				//*Dans le cas d'une requete
 				else if (ancount == 0) {
 					//*Lecture du Query Domain name, a partir du 13 byte
-					int queryDomainName = 0;
+					//*Sauvegarde du Query Domain name
 					for(int i=0; i<5; ++i)
 						ancount = bais.read();
-					//*Sauvegarde du Query Domain name
+					
+					int entete = ancount;
+					String queryDomainName = "";
+					while(entete != 0) {
+						for(int i=0; i<entete; i++)
+							queryDomainName += Character.toChars(bais.read());
+						queryDomainName += ".";
+						entete = bais.read();
+					}					
 					
 					//*Sauvegarde de l'adresse, du port et de l'identifiant de la requete
 					
 
 					//*Si le mode est redirection seulement
-					
+					if(RedirectionSeulement) {
 						//*Rediriger le paquet vers le serveur DNS
-					
+						
+					}
 					//*Sinon
+					else {
 						
 						//*Rechercher l'adresse IP associe au Query Domain name dans le fichier de 
 						//*correspondance de ce serveur
@@ -231,6 +241,7 @@ public class UDPReceiver extends Thread {
 							//*Placer ce paquet dans le socket
 					
 							//*Envoyer le paquet
+					}
 				}
 			}
 		}catch(Exception e){
